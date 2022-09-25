@@ -6,6 +6,7 @@ import { Schema } from 'mongoose';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { Task } from './task.js';
 
 const userSchema = new Schema({
   email: {
@@ -59,16 +60,16 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 }
 
-userSchema.methods.simplify = async function() {
+userSchema.methods.simplify = async function () {
   const user = this;
+  const tasks = await Task.getTasksForUser(user._id);
 
   const userObject = {
     email: user.email,
     firstName: user.firstName,
-    lastName: user.lastName
+    lastName: user.lastName,
+    tasks: tasks
   }
-
-  console.log(userObject)
   return userObject;
 }
 
@@ -94,7 +95,7 @@ userSchema.pre('save', async function (next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();
-})
+});
 
 const User = mongoose.model('User', userSchema);
 
