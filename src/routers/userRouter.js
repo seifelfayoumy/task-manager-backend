@@ -22,7 +22,8 @@ userRouter.post('/users/login', async (req, res) => {
   try {
     const user = await User.findByEmailAndPass(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
-    res.status(200).send({ user, token });
+    const userObject = await user.simplify();
+    res.status(200).send({ userObject, token });
   } catch (e) {
     res.status(400).send(e);
   }
