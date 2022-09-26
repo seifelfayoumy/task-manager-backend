@@ -11,7 +11,8 @@ userRouter.post('/users/signup', async (req, res) => {
   try {
     await user.save();
     const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
+    const userObject = await user.simplify();
+    res.status(201).send({ userObject, token });
   } catch (e) {
     res.status(400).send(e);
   }
