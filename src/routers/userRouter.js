@@ -62,7 +62,7 @@ userRouter.get('/users/user-details', auth, async (req, res) => {
   }
 });
 
-userRouter.patch('/users', auth, async (req, res) => {
+userRouter.post('/users/update', auth, async (req, res) => {
   const changes = Object.keys(req.body);
   const validChanges = ['firstName', 'lastName', 'email', 'password'];
   const isValid = changes.every((change) => validChanges.includes(change));
@@ -80,7 +80,7 @@ userRouter.patch('/users', auth, async (req, res) => {
   }
 });
 
-userRouter.delete('/users', auth, async (req, res) => {
+userRouter.post('/users/delete', auth, async (req, res) => {
   try {
     await Task.deleteUserTasks(req.user._id);
     await User.deleteOne({ _id: req.user._id });

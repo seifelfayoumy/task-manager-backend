@@ -38,12 +38,12 @@ taskSchema.statics.isUserOwner = async (user, taskId) => {
 
 taskSchema.statics.deleteUserTasks = async (userId) => {
 
-  await Task.deleteMany({owner: userId});
+  await Task.deleteMany({ owner: userId });
 }
 
 taskSchema.statics.getTasksForUser = async (userId) => {
 
-  const tasks = await Task.find({owner: userId});
+  const tasks = await Task.find({ owner: userId }).sort({ createdAt: -1 });
   return tasks;
 }
 

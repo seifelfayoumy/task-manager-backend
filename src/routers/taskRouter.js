@@ -17,7 +17,7 @@ taskRouter.post('/tasks', auth, async (req, res) => {
   }
 });
 
-taskRouter.patch('/tasks', auth, authorizeTaskAction, async (req, res) => {
+taskRouter.post('/tasks/update', auth, authorizeTaskAction, async (req, res) => {
   const changes = Object.keys(req.body);
   const validChanges = ['title', 'description', 'isCompleted', '_id'];
   const isValid = changes.every((change) => validChanges.includes(change));
@@ -35,7 +35,7 @@ taskRouter.patch('/tasks', auth, authorizeTaskAction, async (req, res) => {
   }
 });
 
-taskRouter.delete('/tasks', auth, authorizeTaskAction, async (req, res) => {
+taskRouter.post('/tasks/delete', auth, authorizeTaskAction, async (req, res) => {
   const taskId = req.task._id;
   try {
     await Task.deleteOne({ _id: taskId });
